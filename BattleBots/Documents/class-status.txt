@@ -1,0 +1,32 @@
+Grid Manager : Actor - manages the dynamic updating of a Grid
+    >> Currently just stores the Grid object and provides access to it for other actors.
+Grid : Object - manages an array of GridCells and provides helper functions to get information concerning a 2D grid structure from a flat array
+    >> Currently has the array which is re-allocated every time the Grid Manager's grid dimensions are updated via Construction Script.
+    >> Has helper functions to...
+        :: get coordinates from array index
+        :: get tile from coordinates
+GridCell : Object
+    >> TODO: Currently assigns a terrain or (exclusively) a pawn or interactible. Partial implementation on updating their positions after assignment.
+GridActor : Actor
+    >> nothing special about it yet. Supposed to update its position in real time via Construction Script with the Grid Manager.
+    >> Position updating may not be necessary if we simply use a 100m grid spacing in the map editor.
+GridTerrain : GridActor
+    >> Represents a tile terrain in the background. Will eventually just be an actor with some kind of UPaperSprite-component.
+    >> Eventually was just going to be static information about interactions with that background.
+GridInteractible : GridActor
+    >> Represents interactible environmental things that lie in the foreground. Does nothing currently. Will be like the terrain.
+    >> Eventually was just going to be instanced information about what is going on with a particular object at a space
+GridPawn : Pawn
+    >> The controllable version of a GridActor. Still not even sure if we need to do the whole updating in real time thing.
+    
+Here's the situation:
+Unreal has a TileMap asset which will allow us to define static levels. We can then have an accompanying excel spreadsheet that defines where objects are on a given TileMap
+like the default positioning of interactibles or pawns. This would mean, however, that everything is statically defined and can't be modified during runtime.
+
+On the flip side is the Grid setup that allows for dynamic manipulation. It would involve completely abandoning the use of the TileMap in the long run and just using Sprite objects placed
+at each GridCell location at all times (and defining "layers for them to be properly positioned). We won't have that ready for this sprint.
+
+The TM_Sprint1Demo TileMap is stored under Tile/TileMaps, but using that in the level resulted in an error that was saying I had "externally referenced" stuff in the level.
+I solved it by selecting the TileMap in the level, selecting "Convert to Instance", then "Promote to Asset" or something of that sort. There is now an Asset version of the TileMap in a 
+subfolder at Tile/TileMaps/Assets. That Asset in the level did not result in the same error popping up, so everything saves and compiles fine.
+
